@@ -34,6 +34,15 @@ jobs:
       run: |
         git lfs version
         git lfs pull
+    - name: Cache bin and obj folders
+      uses: actions/cache@v2
+      with:
+        path: |
+          **/bin
+          **/obj
+        key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-dotnet-
     - name: Build
       run: |
         ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Development -buildtargets=FlaxEditor
@@ -69,6 +78,15 @@ jobs:
       run: |
         git lfs version
         git lfs pull
+    - name: Cache bin and obj folders
+      uses: actions/cache@v2
+      with:
+        path: |
+          **/bin
+          **/obj
+        key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-dotnet-
     - name: Build
       run: |
         ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxGame
@@ -112,5 +130,5 @@ jobs:
       with:
         context: .
         push: true
-        tags: brmassa/flaxengine:${{ github.ref }}
+        tags: brmassa/flaxengine:${GITHUB_REF#refs/heads/}
         file: Dockerfile
