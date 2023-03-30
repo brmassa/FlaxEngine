@@ -196,7 +196,7 @@ namespace Flax.Build
                 // Detect custom RID in some distros
                 string osId = File.ReadAllLines("/etc/os-release").FirstOrDefault(x => x.StartsWith("ID="), "ID=linux").Substring("ID=".Length);
 
-                rid = $"{osId}-{arch}";
+                rid = System.Runtime.InteropServices.RuntimeInformation.RuntimeIdentifier.ToString();
                 ridFallback = $"linux-{arch}";
                 if (rid == ridFallback)
                     ridFallback = "";
