@@ -34,7 +34,7 @@ jobs:
       run: |
         git lfs version
         git lfs pull
-    - name: Cache bin and obj folders
+    - name: Cache temporary folders
       uses: actions/cache@v3
       with:
         path: |
@@ -81,7 +81,7 @@ jobs:
       run: |
         git lfs version
         git lfs pull
-    - name: Cache bin and obj folders
+    - name: Cache temporary folders
       uses: actions/cache@v3
       with:
         path: |
