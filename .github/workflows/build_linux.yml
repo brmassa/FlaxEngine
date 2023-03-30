@@ -118,7 +118,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: flaxengine-editor-linux-x64
-        path: flaxengine
+        path: flaxengine-editor-linux-x64
     - name: Download game-linux files
       uses: actions/download-artifact@v2
       with:
@@ -136,5 +136,5 @@ jobs:
       with:
         context: .
         push: true
-        tags: brmassa/flaxengine:1.6
+        tags: "brmassa/flaxengine:${{ github.ref_name }}"
         file: Dockerfile
