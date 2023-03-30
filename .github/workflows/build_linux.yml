@@ -38,8 +38,11 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
+          ~/.nuget/packages
           **/bin
           **/obj
+          **/Debug
+          **/Release
         key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
         restore-keys: |
           ${{ runner.os }}-dotnet-
@@ -82,8 +85,11 @@ jobs:
       uses: actions/cache@v2
       with:
         path: |
+          ~/.nuget/packages
           **/bin
           **/obj
+          **/Debug
+          **/Release
         key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
         restore-keys: |
           ${{ runner.os }}-dotnet-
