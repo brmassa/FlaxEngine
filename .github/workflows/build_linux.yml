@@ -14,6 +14,8 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v3
+      with:
+        lfs: true
     - name: Install dependencies
       run: |
         sudo apt-get update
@@ -28,10 +30,10 @@ jobs:
       run: |
         dotnet --info
         dotnet workload --info
-    - name: Checkout LFS
-      run: |
-        git lfs version
-        git lfs pull
+    # - name: Checkout LFS
+    #   run: |
+    #     git lfs version
+    #     git lfs pull
     - name: Cache temporary folders
       uses: actions/cache@v3
       with:
@@ -41,9 +43,9 @@ jobs:
           **/obj
           **/Debug
           **/Release
-        key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
+        key: ${{ runner.os }}-${{ github.ref_name }}-editor-linux-${{ hashFiles('**/*.csproj') }}
         restore-keys: |
-          ${{ runner.os }}-dotnet-
+          ${{ runner.os }}-${{ github.ref_name }}-editor-linux-
     - name: Build
       run: |
         ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Development -buildtargets=FlaxEditor
@@ -62,6 +64,8 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v3
+      with:
+        lfs: true
     - name: Install dependencies
       run: |
         sudo apt-get install libx11-dev libxcursor-dev libxinerama-dev
@@ -75,10 +79,10 @@ jobs:
       run: |
         dotnet --info
         dotnet workload --info
-    - name: Checkout LFS
-      run: |
-        git lfs version
-        git lfs pull
+    # - name: Checkout LFS
+    #   run: |
+    #     git lfs version
+    #     git lfs pull
     - name: Cache temporary folders
       uses: actions/cache@v3
       with:
@@ -88,9 +92,9 @@ jobs:
           **/obj
           **/Debug
           **/Release
-        key: ${{ runner.os }}-dotnet-${{ hashFiles('**/*.csproj') }}
+        key: ${{ runner.os }}-${{ github.ref_name }}-game-linux-${{ hashFiles('**/*.csproj') }}
         restore-keys: |
-          ${{ runner.os }}-dotnet-
+          ${{ runner.os }}-${{ github.ref_name }}-game-linux-
     - name: Build
       run: |
         ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxGame
