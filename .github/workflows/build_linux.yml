@@ -123,12 +123,13 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: flaxengine-editor-linux-x64
-          path: flaxengine-editor-linux-x64
+          path: FlaxEngine
+      - run: chmod +x /FlaxEngine/Editor/Binaries/Editor/Linux/Release/FlaxEditor
       - name: Download game-linux files
         uses: actions/download-artifact@v3
         with:
           name: platform-linux-x64
-          path: platform-linux-x64
+          path: FlaxEngine/Editor/Source/Platforms/Linux
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to DockerHub
