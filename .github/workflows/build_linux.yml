@@ -42,6 +42,7 @@ jobs:
           ~/.nuget/packages
           **/bin
           **/obj
+          **/Cache
           **/Debug
           **/Release
         key: ${{ runner.os }}-${{ github.ref_name }}-editor-linux-${{ hashFiles('**/*.csproj') }}
@@ -89,6 +90,7 @@ jobs:
           ~/.nuget/packages
           **/bin
           **/obj
+          **/Cache
           **/Debug
           **/Release
         key: ${{ runner.os }}-${{ github.ref_name }}-game-linux-${{ hashFiles('**/*.csproj') }}
