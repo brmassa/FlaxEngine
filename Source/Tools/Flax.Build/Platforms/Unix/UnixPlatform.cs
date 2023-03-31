@@ -54,7 +54,7 @@ namespace Flax.Build.Platforms
                 StartInfo =
                 {
                     FileName = "/bin/sh",
-                    ArgumentList = { "-c", $"which {name}" },
+                    ArgumentList = { "-c", $"command -v {name}" },
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,

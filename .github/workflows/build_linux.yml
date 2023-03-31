@@ -3,141 +3,142 @@ on: [push, pull_request]
 
 env:
   DOTNET_NOLOGO: true
-  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: false
 
 jobs:
-
   # Editor
   editor-linux:
     name: Editor (Linux, Development x64)
     runs-on: "ubuntu-22.04"
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
-    - name: Checkout LFS
-      run: |
-        git lfs version
-        git lfs pull
-    - name: Install dependencies
-      run: |
-        sudo apt-get install libx11-dev libxcursor-dev libxinerama-dev
-    # - name: Install dependencies
-    #   run: |
-    #     sudo apt-get update
-    #     sudo apt-get install libx11-dev libxcursor-dev libxinerama-dev build-essential gettext libtool libtool-bin libpulse-dev libasound2-dev libjack-dev portaudio19-dev
-    - name: Setup Vulkan
-      uses: ./.github/actions/vulkan
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-    - name: Print .NET info
-      run: |
-        dotnet --info
-        dotnet workload --info
-    - name: Cache temporary folders
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.nuget/packages
-          **/bin
-          **/obj
-          **/Cache
-          **/Debug
-          **/Release
-        key: ${{ runner.os }}-${{ github.ref_name }}-editor-linux-${{ hashFiles('**/*.csproj') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ github.ref_name }}-editor-linux-
-    - name: Build
-      run: |
-        ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Development -buildtargets=FlaxEditor
-    - name: Upload compiled files as artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: flaxengine-editor-linux-x64
-        path: Binaries/Editor/Linux/Development/**
-        retention-days: 5
-        if-no-files-found: error
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          # sudo apt upgrade -y
+          sudo apt install -y libx11-dev libxcursor-dev libxinerama-dev build-essential gettext libtool libtool-bin libpulse-dev libasound2-dev libjack-dev portaudio19-dev clang
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Print .NET info
+        run: |
+          dotnet --info
+          dotnet workload --info
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Checkout LFS
+        run: |
+          git lfs pull
+      - name: Setup Vulkan
+        uses: ./.github/actions/vulkan
+
+      - name: Cache temporary folders
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.nuget/packages
+            **/bin
+            **/obj
+            **/Cache
+            **/Debug
+            **/Release
+          key: ${{ runner.os }}-${{ github.ref_name }}-editor-linux-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.ref_name }}-editor-linux-
+      - name: Build
+        run: |
+          ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxEditor
+      - name: Upload compiled files as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: flaxengine-editor-linux-x64
+          path: Binaries/Editor/Linux/Release/**
+          retention-days: 5
+          if-no-files-found: error
 
   # Game
   game-linux:
     name: Game (Linux, Release x64)
     runs-on: "ubuntu-22.04"
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
-    - name: Checkout LFS
-      run: |
-        git lfs version
-        git lfs pull
-    - name: Install dependencies
-      run: |
-        sudo apt-get install libx11-dev libxcursor-dev libxinerama-dev
-    - name: Setup Vulkan
-      uses: ./.github/actions/vulkan
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-    - name: Print .NET info
-      run: |
-        dotnet --info
-        dotnet workload --info
-    - name: Cache temporary folders
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.nuget/packages
-          **/bin
-          **/obj
-          **/Cache
-          **/Debug
-          **/Release
-        key: ${{ runner.os }}-${{ github.ref_name }}-game-linux-${{ hashFiles('**/*.csproj') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ github.ref_name }}-game-linux-
-    - name: Build
-      run: |
-        ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxGame
-    - name: Upload compiled files as artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: platform-linux-x64
-        path: Source/Platforms/Linux/Binaries/Game/x64/Release/**
-        retention-days: 5
-        if-no-files-found: error
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          # sudo apt upgrade -y
+          sudo apt install -y libx11-dev libxcursor-dev libxinerama-dev build-essential gettext libtool libtool-bin libpulse-dev libasound2-dev libjack-dev portaudio19-dev clang
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Print .NET info
+        run: |
+          dotnet --info
+          dotnet workload --info
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Checkout LFS
+        run: |
+          git lfs pull
+      - name: Setup Vulkan
+        uses: ./.github/actions/vulkan
+
+      - name: Cache temporary folders
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.nuget/packages
+            **/bin
+            **/obj
+            **/Cache
+            **/Debug
+            **/Release
+          key: ${{ runner.os }}-${{ github.ref_name }}-game-linux-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ github.ref_name }}-game-linux-
+      - name: Build
+        run: |
+          ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxGame
+      - name: Upload compiled files as artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: platform-linux-x64
+          path: Source/Platforms/Linux/Binaries/Game/x64/Release/**
+          retention-days: 5
+          if-no-files-found: error
 
   # Docker
   build-docker:
     name: Build Docker Image
-    needs: 
+    needs:
       - editor-linux
       - game-linux
     runs-on: "ubuntu-22.04"
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
-    - name: Download editor-linux files
-      uses: actions/download-artifact@v3
-      with:
-        name: flaxengine-editor-linux-x64
-        path: flaxengine-editor-linux-x64
-    - name: Download game-linux files
-      uses: actions/download-artifact@v3
-      with:
-        name: platform-linux-x64
-        path: platform-linux-x64
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-    - name: Login to DockerHub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v3
-      with:
-        context: .
-        push: true
-        tags: "brmassa/flaxengine:${{ github.ref_name }}"
-        file: Dockerfile
+      - name: Checkout repo
+        uses: actions/checkout@v3
+      - name: Download editor-linux files
+        uses: actions/download-artifact@v3
+        with:
+          name: flaxengine-editor-linux-x64
+          path: flaxengine-editor-linux-x64
+      - name: Download game-linux files
+        uses: actions/download-artifact@v3
+        with:
+          name: platform-linux-x64
+          path: platform-linux-x64
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: "brmassa/flaxengine:${{ github.ref_name }}"
+          file: Dockerfile
