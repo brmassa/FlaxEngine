@@ -297,7 +297,11 @@ namespace FlaxEditor
             EnsureState<LoadingState>();
             Log("Editor init");
             if (isHeadless)
+            {
+                _modules.Remove(Windows);
+                _modules.Remove(UI);
                 Log("Running in headless mode");
+            }
 
             // Note: we don't sort modules before Init (optimized)
             _modules.Sort((a, b) => a.InitOrder - b.InitOrder);
