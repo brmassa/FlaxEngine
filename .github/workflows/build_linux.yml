@@ -49,7 +49,7 @@ jobs:
       - name: Build
         run: |
           # ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxEditor
-          ./PackageEditor.sh -arch=x64 -platform=Linux -deployOutput=Output --deployDontCompress
+          ./PackageEditor.sh -arch=x64 -platform=Linux -deployOutput=Output --deployDontCompress -configuration=Release --deployDontIncludeSource
       - name: Upload compiled files as artifacts
         uses: actions/upload-artifact@v3
         with:

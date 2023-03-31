@@ -63,9 +63,11 @@ namespace Flax.Deploy
                     {
                         DeployFile(src, dst, "Flax.Build");
                     }
+                    DeployFile(src, dst, "Flax.Build.dll");
                     DeployFile(src, dst, "Ionic.Zip.Reduced.dll");
-                    // DeployFile(src, dst, "Newtonsoft.Json.dll");
-                    // DeployFile(src, dst, "Mono.Cecil.dll");
+                    DeployFile(src, dst, "Flax.Build.runtimeconfig.json");
+                    DeployFile(src, dst, "Microsoft.CodeAnalysis.CSharp.dll");
+                    DeployFile(src, dst, "Microsoft.CodeAnalysis.dll");
                 }
 
                 // Deploy content
@@ -86,9 +88,10 @@ namespace Flax.Deploy
                 //     default:
                 //         throw new InvalidPlatformException(Platform.BuildTargetPlatform);
                 // }
-                        // DeployFolder(RootPath, OutputPath, "Source/Platforms/DotNet");
+                // DeployFolder(RootPath, OutputPath, "Source/Platforms/DotNet");
 
                 // Deploy DotNet deps
+                if (!Configuration.DontIncludeSource)
                 {
                     var subDir = "Source/Platforms/DotNet";
                     DeployFile(RootPath, OutputPath, subDir, "Newtonsoft.Json.dll");
@@ -96,6 +99,7 @@ namespace Flax.Deploy
                 }
 
                 // Deploy sources
+                if (!Configuration.DontIncludeSource)
                 {
                     // Modules public files
                     var rules = Builder.GenerateRulesAssembly();
@@ -317,6 +321,7 @@ namespace Flax.Deploy
                     DeployFiles(src, dst, "*.dll");
                     DeployFiles(src, dst, "*.so");
                     DeployFile(src, dst, "Logo.png");
+                    DeployFile(src, dst, "FlaxEngine.CSharp.runtimeconfig.json");
 
                     // Optimize package size
                     Utilities.Run("strip", "FlaxEditor", null, dst, Utilities.RunOptions.None);

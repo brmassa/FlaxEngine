@@ -46,6 +46,12 @@ namespace Flax.Build
         public static bool DontCompress = false;
 
         /// <summary>
+        /// Compresses deployed files.
+        /// </summary>
+        [CommandLine("deployDontIncludeSource", "Skips including the source files.")]
+        public static bool DontIncludeSource = false;
+
+        /// <summary>
         /// Builds the targets. Builds all the targets, use <see cref="BuildTargets"/> to select a custom set of targets for the build.
         /// </summary>
         [CommandLine("build", "Builds the targets.")]
