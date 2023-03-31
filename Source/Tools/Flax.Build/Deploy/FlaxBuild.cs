@@ -14,7 +14,7 @@ namespace Flax.Deploy
         public static void Build(string root, string target, TargetPlatform platform, TargetArchitecture architecture, TargetConfiguration configuration)
         {
             var buildPlatform = Platform.BuildPlatform.Target;
-            var flaxBuildTool = Path.Combine(Globals.EngineRoot, "Binaries/Tools/Flax.Build.exe");
+            var flaxBuildTool = Path.Combine(Globals.EngineRoot, "Binaries/Tools/Flax.Build");
             var format = "-build -buildtargets={0} -log -logfile= -perf -platform={1} -arch={2} -configuration={3}";
             if (buildPlatform == TargetPlatform.Linux)
             {

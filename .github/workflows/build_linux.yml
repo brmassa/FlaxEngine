@@ -48,7 +48,8 @@ jobs:
             ${{ runner.os }}-${{ github.ref_name }}-editor-linux-
       - name: Build
         run: |
-          ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxEditor
+          # ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxEditor
+          ./PackageEditor.sh -arch=x64 -platform=Linux -deployOutput=Output --deployDontCompress
       - name: Upload compiled files as artifacts
         uses: actions/upload-artifact@v3
         with:
