@@ -10,7 +10,7 @@ if [ $testfilesize -le 1000 ]; then
 fi
 
 # Compile the build tool.
-dotnet msbuild /restore:false /nologo /verbosity:quiet "Source/Tools/Flax.Build/Flax.Build.csproj" /property:Configuration=Release /target:Restore,Build /property:RestorePackagesConfig=True /p:RuntimeIdentifiers=linux-x64
+dotnet msbuild /nologo /verbosity:quiet "Source/Tools/Flax.Build/Flax.Build.csproj" /property:Configuration=Release /target:Restore,Build /property:RestorePackagesConfig=True /p:RuntimeIdentifiers=linux-x64
 
 # Run the build tool using the provided arguments.
 Binaries/Tools/Flax.Build "$@"
