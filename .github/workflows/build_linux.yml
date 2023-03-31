@@ -93,9 +93,9 @@ jobs:
             ~/.nuget/packages
             **/bin
             **/obj
-            **/Cache
-            **/Debug
-            **/Release
+            Cache
+            Debug
+            Release
           key: ${{ runner.os }}-${{ github.ref_name }}-game-linux-${{ hashFiles('**/*.csproj') }}
           restore-keys: |
             ${{ runner.os }}-${{ github.ref_name }}-game-linux-
