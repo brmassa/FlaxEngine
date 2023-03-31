@@ -43,7 +43,7 @@ jobs:
             **/Cache
             **/Debug
             **/Release
-          key: ${{ runner.os }}-${{ github.ref_name }}-editor-linux-${{ hashFiles('**/*.csproj') }}
+          key: ${{ runner.os }}-${{ github.ref_name }}-editor-linux-${{ hashFiles('Cache/Intermediate/Log.txt') }}
           restore-keys: |
             ${{ runner.os }}-${{ github.ref_name }}-editor-linux-
       - name: Build
@@ -96,7 +96,7 @@ jobs:
             Cache
             Debug
             Release
-          key: ${{ runner.os }}-${{ github.ref_name }}-game-linux-${{ hashFiles('**/*.csproj') }}
+          key: ${{ runner.os }}-${{ github.ref_name }}-game-linux-${{ hashFiles('Cache/Intermediate/Log.txt') }}
           restore-keys: |
             ${{ runner.os }}-${{ github.ref_name }}-game-linux-
       - name: Build
