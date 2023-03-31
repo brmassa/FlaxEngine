@@ -50,12 +50,12 @@ jobs:
         run: |
           # ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxEditor
           ./PackageEditor.sh -arch=x64 -platform=Linux -deployOutput=Output --deployDontCompress -configuration=Release --deployDontIncludeSource
-      - run: chmod +x Output/Editor/Binaries/Editor/Linux/Release/FlaxEditor
+      # - run: chmod +x Output/Editor/Binaries/Editor/Linux/Release/FlaxEditor
       - name: Upload compiled files as artifacts
         uses: actions/upload-artifact@v3
         with:
           name: flaxengine-editor-linux-x64
-          path: Output/**
+          path: Output/Editor/**
           retention-days: 5
           if-no-files-found: error
 
@@ -130,9 +130,6 @@ jobs:
         with:
           name: platform-linux-x64
           path: platform-linux-x64
-      # - run: |
-      #     mkdir --parents /FlaxEngine/Editor/Source/Platforms
-      #     mv /FlaxEngine/platform-linux-x64 /FlaxEngine/Editor/Source/Platforms/Linux
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to DockerHub

@@ -273,8 +273,11 @@ namespace FlaxEditor
             RegisterModule(Options = new OptionsModule(this));
             RegisterModule(ProjectCache = new ProjectCacheModule(this));
             RegisterModule(Scene = new SceneModule(this));
-            RegisterModule(Windows = new WindowsModule(this));
-            RegisterModule(UI = new UIModule(this));
+            if (!isHeadless)
+            {
+                RegisterModule(Windows = new WindowsModule(this));
+                RegisterModule(UI = new UIModule(this));
+            }
             RegisterModule(Thumbnails = new ThumbnailsModule(this));
             RegisterModule(Simulation = new SimulationModule(this));
             RegisterModule(Prefabs = new PrefabsModule(this));
@@ -297,11 +300,7 @@ namespace FlaxEditor
             EnsureState<LoadingState>();
             Log("Editor init");
             if (isHeadless)
-            {
-                _modules.Remove(Windows);
-                _modules.Remove(UI);
                 Log("Running in headless mode");
-            }
 
             // Note: we don't sort modules before Init (optimized)
             _modules.Sort((a, b) => a.InitOrder - b.InitOrder);
