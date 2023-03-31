@@ -19,9 +19,13 @@ namespace Flax.Deploy
                 return;
             switch (Platform.BuildTargetPlatform)
             {
-            case TargetPlatform.Windows:
-                VCEnvironment.CodeSign(file, Configuration.DeployCert, Configuration.DeployCertPass);
-                break;
+                case TargetPlatform.Windows:
+                    VCEnvironment.CodeSign(
+                        file,
+                        Configuration.DeployCert,
+                        Configuration.DeployCertPass
+                    );
+                    break;
             }
         }
 
@@ -49,31 +53,40 @@ namespace Flax.Deploy
                     var src = Path.Combine(RootPath, binariesSubDir);
                     var dst = Path.Combine(OutputPath, binariesSubDir);
 
-                    DeployFile(src, dst, "Flax.Build.exe");
-                    CodeSign(Path.Combine(dst, "Flax.Build.exe"));
-                    DeployFile(src, dst, "Flax.Build.xml");
+                    if (Platform.BuildTargetPlatform == TargetPlatform.Windows)
+                    {
+                        DeployFile(src, dst, "Flax.Build.exe");
+                        CodeSign(Path.Combine(dst, "Flax.Build.exe"));
+                        DeployFile(src, dst, "Flax.Build.xml");
+                    }
+                    else
+                    {
+                        DeployFile(src, dst, "Flax.Build");
+                    }
                     DeployFile(src, dst, "Ionic.Zip.Reduced.dll");
-                    DeployFile(src, dst, "Newtonsoft.Json.dll");
-                    DeployFile(src, dst, "Mono.Cecil.dll");
+                    // DeployFile(src, dst, "Newtonsoft.Json.dll");
+                    // DeployFile(src, dst, "Mono.Cecil.dll");
                 }
 
                 // Deploy content
                 DeployFolder(RootPath, OutputPath, "Content");
 
                 // Deploy Mono runtime data files
-                switch (Platform.BuildTargetPlatform)
-                {
-                case TargetPlatform.Windows:
-                    DeployFolder(RootPath, OutputPath, "Source/Platforms/Editor/Windows/Mono");
-                    break;
-                case TargetPlatform.Linux:
-                    DeployFolder(RootPath, OutputPath, "Source/Platforms/Editor/Linux/Mono");
-                    break;
-                case TargetPlatform.Mac:
-                    DeployFolder(RootPath, OutputPath, "Source/Platforms/Editor/Mac/Mono");
-                    break;
-                default: throw new InvalidPlatformException(Platform.BuildTargetPlatform);
-                }
+                // switch (Platform.BuildTargetPlatform)
+                // {
+                //     case TargetPlatform.Windows:
+                //         DeployFolder(RootPath, OutputPath, "Source/Platforms/Editor/Windows/Mono");
+                //         break;
+                //     case TargetPlatform.Linux:
+                //         DeployFolder(RootPath, OutputPath, "Source/Platforms/Editor/Linux/Mono");
+                //         break;
+                //     case TargetPlatform.Mac:
+                //         DeployFolder(RootPath, OutputPath, "Source/Platforms/Editor/Mac/Mono");
+                //         break;
+                //     default:
+                //         throw new InvalidPlatformException(Platform.BuildTargetPlatform);
+                // }
+                        // DeployFolder(RootPath, OutputPath, "Source/Platforms/DotNet");
 
                 // Deploy DotNet deps
                 {
@@ -96,7 +109,10 @@ namespace Flax.Deploy
                         foreach (var file in files)
                         {
                             var src = Path.GetDirectoryName(file);
-                            var dst = Path.Combine(OutputPath, Utilities.MakePathRelativeTo(src, RootPath));
+                            var dst = Path.Combine(
+                                OutputPath,
+                                Utilities.MakePathRelativeTo(src, RootPath)
+                            );
                             var filename = Path.GetFileName(file);
                             DeployFile(src, dst, filename);
                         }
@@ -104,7 +120,11 @@ namespace Flax.Deploy
                     }
 
                     // Shader includes
-                    var shaders = Directory.GetFiles(Path.Combine(RootPath, "Source/Shaders"), "*.hlsl", SearchOption.AllDirectories);
+                    var shaders = Directory.GetFiles(
+                        Path.Combine(RootPath, "Source/Shaders"),
+                        "*.hlsl",
+                        SearchOption.AllDirectories
+                    );
                     foreach (var shader in shaders)
                     {
                         var localPath = Utilities.MakePathRelativeTo(shader, RootPath);
@@ -120,8 +140,16 @@ namespace Flax.Deploy
                     DeployFile(RootPath, OutputPath, "Source", "FlaxGame.Build.cs");
 
                     // Mark deployed sources as already prebuilt
-                    Utilities.ReplaceInFile(Path.Combine(OutputPath, "Source/FlaxEditor.Build.cs"), "IsPreBuilt = false;", "IsPreBuilt = true;");
-                    Utilities.ReplaceInFile(Path.Combine(OutputPath, "Source/FlaxGame.Build.cs"), "IsPreBuilt = false;", "IsPreBuilt = true;");
+                    Utilities.ReplaceInFile(
+                        Path.Combine(OutputPath, "Source/FlaxEditor.Build.cs"),
+                        "IsPreBuilt = false;",
+                        "IsPreBuilt = true;"
+                    );
+                    Utilities.ReplaceInFile(
+                        Path.Combine(OutputPath, "Source/FlaxGame.Build.cs"),
+                        "IsPreBuilt = false;",
+                        "IsPreBuilt = true;"
+                    );
                 }
 
                 // Deploy project
@@ -130,11 +158,13 @@ namespace Flax.Deploy
                 // Compress
                 if (Configuration.DontCompress)
                     return;
-                
+
                 Log.Info(string.Empty);
                 Log.Info("Compressing editor files...");
                 string editorPackageZipPath;
-                var unix = Platform.BuildTargetPlatform == TargetPlatform.Linux || Platform.BuildTargetPlatform == TargetPlatform.Mac;
+                var unix =
+                    Platform.BuildTargetPlatform == TargetPlatform.Linux
+                    || Platform.BuildTargetPlatform == TargetPlatform.Mac;
                 if (unix)
                 {
                     var zipEofPath = UnixPlatform.Which("zip");
@@ -145,9 +175,18 @@ namespace Flax.Deploy
                 if (unix)
                 {
                     // Use system tool (preserves executable file attributes and link files)
-                    editorPackageZipPath = Path.Combine(Deployer.PackageOutputPath, $"FlaxEditor{Enum.GetName(typeof(TargetPlatform), Platform.BuildTargetPlatform)}.zip");
+                    editorPackageZipPath = Path.Combine(
+                        Deployer.PackageOutputPath,
+                        $"FlaxEditor{Enum.GetName(typeof(TargetPlatform), Platform.BuildTargetPlatform)}.zip"
+                    );
                     Utilities.FileDelete(editorPackageZipPath);
-                    Utilities.Run("zip", "Editor.zip -r .", null, OutputPath, Utilities.RunOptions.ThrowExceptionOnError);
+                    Utilities.Run(
+                        "zip",
+                        "Editor.zip -r .",
+                        null,
+                        OutputPath,
+                        Utilities.RunOptions.ThrowExceptionOnError
+                    );
                     File.Move(Path.Combine(OutputPath, "Editor.zip"), editorPackageZipPath);
                 }
                 else
@@ -155,7 +194,12 @@ namespace Flax.Deploy
                     editorPackageZipPath = Path.Combine(Deployer.PackageOutputPath, "Editor.zip");
                     Utilities.FileDelete(editorPackageZipPath);
 #if USE_STD
-                    System.IO.Compression.ZipFile.CreateFromDirectory(OutputPath, editorPackageZipPath, System.IO.Compression.CompressionLevel.Optimal, false);
+                    System.IO.Compression.ZipFile.CreateFromDirectory(
+                        OutputPath,
+                        editorPackageZipPath,
+                        System.IO.Compression.CompressionLevel.Optimal,
+                        false
+                    );
 #else
                     using (var zip = new Ionic.Zip.ZipFile())
                     {
@@ -166,15 +210,25 @@ namespace Flax.Deploy
                     }
 #endif
                 }
-                Log.Info("Compressed editor package size: " + Utilities.GetFileSize(editorPackageZipPath));
+                Log.Info(
+                    "Compressed editor package size: " + Utilities.GetFileSize(editorPackageZipPath)
+                );
 
                 if (Platform.BuildTargetPlatform == TargetPlatform.Windows)
                 {
                     Log.Info("Compressing editor debug symbols files...");
-                    editorPackageZipPath = Path.Combine(Deployer.PackageOutputPath, "EditorDebugSymbols.zip");
+                    editorPackageZipPath = Path.Combine(
+                        Deployer.PackageOutputPath,
+                        "EditorDebugSymbols.zip"
+                    );
                     Utilities.FileDelete(editorPackageZipPath);
 #if USE_STD
-                    System.IO.Compression.ZipFile.CreateFromDirectory(Path.Combine(Deployer.PackageOutputPath, "EditorDebugSymbols"), editorPackageZipPath, System.IO.Compression.CompressionLevel.Optimal, false);
+                    System.IO.Compression.ZipFile.CreateFromDirectory(
+                        Path.Combine(Deployer.PackageOutputPath, "EditorDebugSymbols"),
+                        editorPackageZipPath,
+                        System.IO.Compression.CompressionLevel.Optimal,
+                        false
+                    );
 #else
                     using (var zip = new Ionic.Zip.ZipFile())
                     {
@@ -184,32 +238,51 @@ namespace Flax.Deploy
                         zip.Save(editorPackageZipPath);
                     }
 #endif
-                    Log.Info("Compressed editor debug symbols package size: " + Utilities.GetFileSize(editorPackageZipPath));
+                    Log.Info(
+                        "Compressed editor debug symbols package size: "
+                            + Utilities.GetFileSize(editorPackageZipPath)
+                    );
                 }
 
                 // Cleanup
                 Utilities.DirectoryDelete(OutputPath);
-                Utilities.DirectoryDelete(Path.Combine(Deployer.PackageOutputPath, "EditorDebugSymbols"));
+                Utilities.DirectoryDelete(
+                    Path.Combine(Deployer.PackageOutputPath, "EditorDebugSymbols")
+                );
             }
 
             private static void DeployEditorBinaries(TargetConfiguration configuration)
             {
-                var binariesSubDir = Path.Combine(Platform.GetEditorBinaryDirectory(), configuration.ToString());
+                var binariesSubDir = Path.Combine(
+                    Platform.GetEditorBinaryDirectory(),
+                    configuration.ToString()
+                );
                 var src = Path.Combine(RootPath, binariesSubDir);
                 var dst = Path.Combine(OutputPath, binariesSubDir);
                 Directory.CreateDirectory(dst);
 
                 if (Platform.BuildTargetPlatform == TargetPlatform.Windows)
                 {
-                    var dstDebug = Path.Combine(Deployer.PackageOutputPath, "EditorDebugSymbols/Win64/" + configuration);
+                    var dstDebug = Path.Combine(
+                        Deployer.PackageOutputPath,
+                        "EditorDebugSymbols/Win64/" + configuration
+                    );
                     Directory.CreateDirectory(dstDebug);
 
                     // Validate that build editor app has a valid version number
                     var editorExeName = "FlaxEditor.exe";
                     var version = FileVersionInfo.GetVersionInfo(Path.Combine(src, editorExeName));
-                    if (version.FileMajorPart != Deployer.VersionMajor || version.FileMinorPart != Deployer.VersionMinor || version.FileBuildPart != Deployer.VersionBuild)
+                    if (
+                        version.FileMajorPart != Deployer.VersionMajor
+                        || version.FileMinorPart != Deployer.VersionMinor
+                        || version.FileBuildPart != Deployer.VersionBuild
+                    )
                     {
-                        throw new InvalidDataException("Invalid engine build number. Output " + editorExeName + " has not matching version number.");
+                        throw new InvalidDataException(
+                            "Invalid engine build number. Output "
+                                + editorExeName
+                                + " has not matching version number."
+                        );
                     }
 
                     // Deploy binaries
@@ -247,7 +320,13 @@ namespace Flax.Deploy
 
                     // Optimize package size
                     Utilities.Run("strip", "FlaxEditor", null, dst, Utilities.RunOptions.None);
-                    Utilities.Run("strip", "libFlaxEditor.so", null, dst, Utilities.RunOptions.None);
+                    Utilities.Run(
+                        "strip",
+                        "libFlaxEditor.so",
+                        null,
+                        dst,
+                        Utilities.RunOptions.None
+                    );
                 }
                 else if (Platform.BuildTargetPlatform == TargetPlatform.Mac)
                 {
@@ -263,8 +342,20 @@ namespace Flax.Deploy
 
                     // Optimize package size
                     Utilities.Run("strip", "FlaxEditor", null, dst, Utilities.RunOptions.None);
-                    Utilities.Run("strip", "FlaxEditor.dylib", null, dst, Utilities.RunOptions.None);
-                    Utilities.Run("strip", "libMoltenVK.dylib", null, dst, Utilities.RunOptions.None);
+                    Utilities.Run(
+                        "strip",
+                        "FlaxEditor.dylib",
+                        null,
+                        dst,
+                        Utilities.RunOptions.None
+                    );
+                    Utilities.Run(
+                        "strip",
+                        "libMoltenVK.dylib",
+                        null,
+                        dst,
+                        Utilities.RunOptions.None
+                    );
                 }
             }
         }

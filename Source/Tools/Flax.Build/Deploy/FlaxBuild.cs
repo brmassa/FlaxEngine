@@ -14,7 +14,7 @@ namespace Flax.Deploy
         public static void Build(string root, string target, TargetPlatform platform, TargetArchitecture architecture, TargetConfiguration configuration)
         {
             var buildPlatform = Platform.BuildPlatform.Target;
-            var flaxBuildTool = Path.Combine(Globals.EngineRoot, "Binaries/Tools/Flax.Build");
+            var flaxBuildTool = Path.Combine(Globals.EngineRoot, "Binaries/Tools/Flax.Build.dll");
             var format = "-build -buildtargets={0} -log -logfile= -perf -platform={1} -arch={2} -configuration={3}";
             if (buildPlatform == TargetPlatform.Linux)
             {
@@ -31,7 +31,7 @@ namespace Flax.Deploy
             }
             else
             {
-                result = Utilities.Run("mono", flaxBuildTool + " " + cmdLine, null, root);
+                result = Utilities.Run("dotnet", flaxBuildTool + " " + cmdLine, null, root);
             }
 
             if (result != 0)
