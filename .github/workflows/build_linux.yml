@@ -124,7 +124,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: flaxengine-editor-linux-x64
-          path: FlaxEngine
+          path: flaxengine-editor-linux-x64
       - name: Download game-linux files
         uses: actions/download-artifact@v3
         with:
