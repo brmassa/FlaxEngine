@@ -96,7 +96,9 @@ jobs:
           key: game-linux-${{ runner.os }}-${{ github.ref_name }}-${{ github.event.head_commit.timestamp }}
           restore-keys: |
             game-linux-${{ runner.os }}-${{ github.ref_name }}-
-      - run: ls -ltR
+      - run: |
+          echo ${{ github.event.head_commit.timestamp }}
+          ls -ltR
       - name: Build
         run: |
           ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxGame
