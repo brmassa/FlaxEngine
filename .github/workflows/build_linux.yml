@@ -46,11 +46,11 @@ jobs:
       - name: Build
         run: |
           ./PackageEditor.sh -arch=x64 -platform=Linux -deployOutput=Output --deployDontCompress  -skipCacheTimestamp
-      - name: Upload compiled files as artifacts
+      - name: Save result as artifacts
         uses: actions/upload-artifact@v3
         with:
           name: flaxengine-editor-linux-x64
-          path: Output/Editor/**
+          path: Output/**
           retention-days: 5
 
   # Game
@@ -94,7 +94,7 @@ jobs:
       - name: Build
         run: |
           ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -buildtargets=FlaxGame -skipCacheTimestamp
-      - name: Upload compiled files as artifacts
+      - name: Save result as artifacts
         uses: actions/upload-artifact@v3
         with:
           name: platform-linux-x64
