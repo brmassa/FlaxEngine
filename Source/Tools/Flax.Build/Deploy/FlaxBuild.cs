@@ -15,7 +15,7 @@ namespace Flax.Deploy
         {
             var buildPlatform = Platform.BuildPlatform.Target;
             var flaxBuildTool = Path.Combine(Globals.EngineRoot, "Binaries/Tools/Flax.Build.dll");
-            var format = "-build -buildtargets={0} -log -logfile= -perf -platform={1} -arch={2} -configuration={3}" + (configuration.SkipCacheTimestamp ? " -skipCacheTimestamp" : "");
+            var format = "-build -buildtargets={0} -log -logfile= -perf -platform={1} -arch={2} -configuration={3}" + (Configuration.SkipCacheTimestamp ? " -skipCacheTimestamp" : "");
             if (buildPlatform == TargetPlatform.Linux)
             {
                 format = format.Replace("-", "--");
