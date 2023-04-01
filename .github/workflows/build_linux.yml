@@ -96,13 +96,11 @@ jobs:
           key: game-linux-${{ runner.os }}-${{ github.ref_name }}-${{ github.event.head_commit.timestamp }}
           restore-keys: |
             game-linux-${{ runner.os }}-${{ github.ref_name }}-
-      - run: |
-          echo ${{ github.event.head_commit.timestamp }}
-          ls -ltR
+      - run: ls -ltR Cache
       - name: Build
         run: |
           ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxGame
-      - run: ls -ltR
+      - run: ls -ltR ls -ltR Cache
       - name: Upload compiled files as artifacts
         uses: actions/upload-artifact@v3
         with:
