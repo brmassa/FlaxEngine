@@ -221,7 +221,6 @@ namespace Flax.Build.Graph
 
         private void LoadCache1(BinaryReader reader, Dictionary<string, Task> tasksCache, ref int validCount, ref int invalidCount)
         {
-            Log.Info($"------------LoadCache1");
             var fileIndices = new List<int>();
 
             int taskCount = reader.ReadInt32();
@@ -298,12 +297,14 @@ namespace Flax.Build.Graph
                 var file = reader.ReadString();
                 var lastWrite = new DateTime(reader.ReadInt64());
 
+                        Log.Info($"------------{Configuration.SkipCacheTimestamp}");
                 var isValid = true;
                 var cacheFile = true;
                 if (FileCache.Exists(file))
                 {
                     if (!Configuration.SkipCacheTimestamp && FileCache.GetLastWriteTime(file) > lastWrite)
                     {
+                        Log.Info($"------------{file}");
                         isValid = false;
                     }
                 }
