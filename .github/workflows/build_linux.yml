@@ -42,7 +42,7 @@ jobs:
             Cache
           key: editor-linux-${{ runner.os }}-${{ github.ref_name }}-${{ github.event.head_commit.timestamp }}
           restore-keys: |
-            editor-linux${{ runner.os }}-${{ github.ref_name }}-
+            editor-linux-${{ runner.os }}-${{ github.ref_name }}-
       - name: Build
         run: |
           # ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxEditor
