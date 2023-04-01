@@ -306,7 +306,7 @@ namespace Flax.Build.Graph
                     if (FileCache.GetLastWriteTime(file) > lastWrite)
                     {
             Log.Info($"------------ 1 : {file} {FileCache.GetLastWriteTime(file)} {lastWrite}");
-                        isValid = false;
+                        //isValid = false;
                     }
                 }
                 else if (lastWrite != DateTime.MinValue)

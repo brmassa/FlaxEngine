@@ -100,7 +100,7 @@ jobs:
       - name: Build
         run: |
           ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxGame
-      - run: ls -ltR ls -ltR Cache
+      - run: ls -ltR Cache
       - name: Upload compiled files as artifacts
         uses: actions/upload-artifact@v3
         with:
