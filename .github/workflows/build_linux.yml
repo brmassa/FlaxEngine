@@ -52,7 +52,6 @@ jobs:
           name: flaxengine-editor-linux-x64
           path: Output/Editor/**
           retention-days: 5
-      - run: ls -ltR
 
   # Game
   game-linux:
