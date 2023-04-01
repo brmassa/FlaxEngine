@@ -26,9 +26,11 @@ jobs:
           dotnet workload --info
 
       - name: Checkout repo
-        uses: actions/checkout@v3
-      - name: Checkout LFS
-        run: git-lfs pull
+        uses: nschloe/action-cached-lfs-checkout@v1
+      # - name: Checkout repo
+      #   uses: actions/checkout@v3
+      # - name: Checkout LFS
+      #   run: git-lfs pull
       - name: Setup Vulkan
         uses: ./.github/actions/vulkan
 
@@ -73,10 +75,12 @@ jobs:
           dotnet workload --info
 
       - name: Checkout repo
-        uses: actions/checkout@v3
-      - name: Checkout LFS
-        run: |
-          git lfs pull
+        uses: nschloe/action-cached-lfs-checkout@v1
+      # - name: Checkout repo
+      #   uses: actions/checkout@v3
+      # - name: Checkout LFS
+      #   run: |
+      #     git lfs pull
       - name: Setup Vulkan
         uses: ./.github/actions/vulkan
 
