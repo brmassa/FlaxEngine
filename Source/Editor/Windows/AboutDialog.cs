@@ -86,6 +86,7 @@ namespace FlaxEditor.Windows
         {
             var authors = new List<string>(new[]
             {
+                "Bruno Massa",
                 "Wojciech Figat",
                 "Tomasz Juszczak",
                 "Damian Korczowski",
