@@ -46,10 +46,10 @@ namespace Flax.Build
         public static bool DontCompress = false;
 
         /// <summary>
-        /// Compresses deployed files.
+        /// Skips the LastWriteTime check of cached files.
         /// </summary>
-        [CommandLine("deployDontIncludeSource", "Skips including the source files.")]
-        public static bool DontIncludeSource = false;
+        [CommandLine("skipCacheTimestamp", "Skips the LastWriteTime check of cached files. Useful on Ci/CD procresses that write the cache each time, invalidaing the cache.")]
+        public static bool SkipCacheTimestamp = false;
 
         /// <summary>
         /// Builds the targets. Builds all the targets, use <see cref="BuildTargets"/> to select a custom set of targets for the build.

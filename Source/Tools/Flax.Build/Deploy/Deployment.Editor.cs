@@ -91,7 +91,6 @@ namespace Flax.Deploy
                 // DeployFolder(RootPath, OutputPath, "Source/Platforms/DotNet");
 
                 // Deploy DotNet deps
-                if (!Configuration.DontIncludeSource)
                 {
                     var subDir = "Source/Platforms/DotNet";
                     DeployFile(RootPath, OutputPath, subDir, "Newtonsoft.Json.dll");
@@ -99,7 +98,6 @@ namespace Flax.Deploy
                 }
 
                 // Deploy sources
-                if (!Configuration.DontIncludeSource)
                 {
                     // Modules public files
                     var rules = Builder.GenerateRulesAssembly();

@@ -293,7 +293,6 @@ namespace Flax.Build.Graph
             var filesDates = new DateTime[pathsCount];
             var filesValid = new bool[pathsCount];
             _prevBuildCacheFiles.Capacity = pathsCount;
-            Log.Info($"------------CACHE COUNT: {pathsCount}");
             for (int i = 0; i < pathsCount; i++)
             {
                 var file = reader.ReadString();
@@ -303,10 +302,9 @@ namespace Flax.Build.Graph
                 var cacheFile = true;
                 if (FileCache.Exists(file))
                 {
-                    if (FileCache.GetLastWriteTime(file) > lastWrite)
+                    if (!Configuration.SkipCacheTimestamp && FileCache.GetLastWriteTime(file) > lastWrite)
                     {
-            Log.Info($"------------ 1 : {file} {FileCache.GetLastWriteTime(file)} {lastWrite}");
-                        //isValid = false;
+                        isValid = false;
                     }
                 }
                 else if (lastWrite != DateTime.MinValue)

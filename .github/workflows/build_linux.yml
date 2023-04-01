@@ -43,20 +43,17 @@ jobs:
           key: editor-linux-${{ runner.os }}-${{ github.ref_name }}-${{ github.event.head_commit.timestamp }}
           restore-keys: |
             editor-linux${{ runner.os }}-${{ github.ref_name }}-
-      - run: ls -ltR
       - name: Build
         run: |
           # ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxEditor
-          ./PackageEditor.sh -arch=x64 -platform=Linux -deployOutput=Output --deployDontCompress -configuration=Release --deployDontIncludeSource
-      - run: ls -ltR
-      - run: cat Cache/Intermediate/Log.txt
+          ./PackageEditor.sh -arch=x64 -platform=Linux -deployOutput=Output --deployDontCompress  -skipCacheTimestamp
       - name: Upload compiled files as artifacts
         uses: actions/upload-artifact@v3
         with:
           name: flaxengine-editor-linux-x64
           path: Output/Editor/**
           retention-days: 5
-          if-no-files-found: error
+      - run: ls -ltR
 
   # Game
   game-linux:
@@ -96,11 +93,9 @@ jobs:
           key: game-linux-${{ runner.os }}-${{ github.ref_name }}-${{ github.event.head_commit.timestamp }}
           restore-keys: |
             game-linux-${{ runner.os }}-${{ github.ref_name }}-
-      - run: ls -ltR Cache
       - name: Build
         run: |
-          ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxGame
-      - run: ls -ltR Cache
+          ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxGame -skipCacheTimestamp
       - name: Upload compiled files as artifacts
         uses: actions/upload-artifact@v3
         with:

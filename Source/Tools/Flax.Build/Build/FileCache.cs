@@ -30,12 +30,11 @@ namespace Flax.Build
         public static DateTime GetLastWriteTime(string path)
         {
 
-            // if (fileInfoCache.TryGetValue(path, out var fileInfo))
-            // {}
-                // return fileInfo.LastWriteTime;
+            if (fileInfoCache.TryGetValue(path, out var fileInfo))
+                return fileInfo.LastWriteTime;
 
-            var fileInfo = new FileInfo(path);
-            // fileInfoCache.Add(path, fileInfo);
+            fileInfo = new FileInfo(path);
+            fileInfoCache.Add(path, fileInfo);
             return fileInfo.LastWriteTime;
         }
     }
