@@ -39,9 +39,9 @@ jobs:
             ~/.nuget/packages
             **/bin
             **/obj
-            **/Cache
-            **/Debug
-            **/Release
+            Cache
+            Debug
+            Release
           key: ${{ runner.os }}-${{ github.ref_name }}-editor-linux-${{ hashFiles('Cache/Intermediate/Log.txt') }}
           restore-keys: |
             ${{ runner.os }}-${{ github.ref_name }}-editor-linux-
@@ -50,7 +50,7 @@ jobs:
         run: |
           # ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxEditor
           ./PackageEditor.sh -arch=x64 -platform=Linux -deployOutput=Output --deployDontCompress -configuration=Release --deployDontIncludeSource
-      # - run: chmod +x Output/Editor/Binaries/Editor/Linux/Release/FlaxEditor
+      - run: ls -ltR
       - name: Upload compiled files as artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -99,9 +99,11 @@ jobs:
           key: ${{ runner.os }}-${{ github.ref_name }}-game-linux-${{ hashFiles('Cache/Intermediate/Log.txt') }}
           restore-keys: |
             ${{ runner.os }}-${{ github.ref_name }}-game-linux-
+      - run: ls -ltR
       - name: Build
         run: |
           ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxGame
+      - run: ls -ltR
       - name: Upload compiled files as artifacts
         uses: actions/upload-artifact@v3
         with:
