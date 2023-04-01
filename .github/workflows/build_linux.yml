@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: flaxengine-editor-linux-x64
-          path: Output/**
+          path: Output/Editor/**
           retention-days: 5
 
   # Game
