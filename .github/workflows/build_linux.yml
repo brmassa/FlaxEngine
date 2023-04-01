@@ -28,8 +28,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
       - name: Checkout LFS
-        run: |
-          git lfs pull
+        run: git-lfs pull
       - name: Setup Vulkan
         uses: ./.github/actions/vulkan
 
@@ -46,6 +45,7 @@ jobs:
           key: ${{ runner.os }}-${{ github.ref_name }}-editor-linux-${{ hashFiles('Cache/Intermediate/Log.txt') }}
           restore-keys: |
             ${{ runner.os }}-${{ github.ref_name }}-editor-linux-
+      - run: ls -ltR
       - name: Build
         run: |
           # ./Development/Scripts/Linux/CallBuildTool.sh -build -log -arch=x64 -platform=Linux -configuration=Release -buildtargets=FlaxEditor
