@@ -63,11 +63,19 @@ namespace Flax.Deploy
                     {
                         DeployFile(src, dst, "Flax.Build");
                     }
+                    DeployFile(src, dst, "Flax.Build.deps.json");
                     DeployFile(src, dst, "Flax.Build.dll");
-                    DeployFile(src, dst, "Ionic.Zip.Reduced.dll");
+                    DeployFile(src, dst, "Flax.Build.pdb");
                     DeployFile(src, dst, "Flax.Build.runtimeconfig.json");
+                    DeployFile(src, dst, "Ionic.Zip.Reduced.dll");
                     DeployFile(src, dst, "Microsoft.CodeAnalysis.CSharp.dll");
+                    DeployFile(src, dst, "Microsoft.CodeAnalysis.CSharp.xml");
                     DeployFile(src, dst, "Microsoft.CodeAnalysis.dll");
+                    DeployFile(src, dst, "Microsoft.CodeAnalysis.xml");
+                    DeployFile(src, dst, "Microsoft.VisualStudio.Setup.Configuration.Interop.dll");
+                    DeployFile(src, dst, "Microsoft.VisualStudio.Setup.Configuration.Interop.xml");
+                    DeployFile(src, dst, "Mono.Cecil.dll");
+                    DeployFile(src, dst, "Mono.Cecil.pdb");
                 }
 
                 // Deploy content

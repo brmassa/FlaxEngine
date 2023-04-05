@@ -7,4 +7,4 @@ RUN chmod +x ./Binaries/Editor/Linux/Debug/FlaxEditor \
     ./Binaries/Editor/Linux/Development/FlaxEditor \
     ./Binaries/Editor/Linux/Release/FlaxEditor \
     ./Binaries/Tools/Flax.Build
-COPY platform-linux-x64 ./Source/Platforms/Linux
+COPY Linux ./Source/Platforms/Linux
